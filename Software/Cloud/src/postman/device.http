@@ -1,0 +1,6 @@
+@url_dev = http://localhost:3005/v1/api
+
+### Get All Device
+GET {{url_dev}}/device/alldevice
+CLIENT_ID:662383dc5e384004346fe7b3
+ACCESS_TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjIzODNkYzVlMzg0MDA0MzQ2ZmU3YjMiLCJpYXQiOjE3MTM2NjY5MzEsImV4cCI6MTcxMzkyNjEzMX0.ggANqp2vcz8912I-qFIsfHzXyWHoCSyMQHcVqJmVhDo

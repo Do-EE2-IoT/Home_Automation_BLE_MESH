@@ -1,0 +1,78 @@
+menu "Local Control Configuration"
+
+    choice LOCAL_CONTROL_PROTOCOMM_SECURITY_VERSION
+        bool "Protocomm security version"
+        default LOCAL_CONTROL_PROTOCOMM_SECURITY_VERSION_2
+        help
+            Local Control component offers 3 security versions.
+            The Local Control offers a choice between security version 0, 1 and 2.
+
+        config LOCAL_CONTROL_PROTOCOMM_SECURITY_VERSION_0
+            bool "Security Version 0"
+            select ESP_PROTOCOMM_SUPPORT_SECURITY_VERSION_0
+
+        config LOCAL_CONTROL_PROTOCOMM_SECURITY_VERSION_1
+            bool "Security version 1"
+            select ESP_PROTOCOMM_SUPPORT_SECURITY_VERSION_1
+
+        config LOCAL_CONTROL_PROTOCOMM_SECURITY_VERSION_2
+            bool "Security version 2"
+            select ESP_PROTOCOMM_SUPPORT_SECURITY_VERSION_2
+    endchoice
+
+    choice LOCAL_CONTROL_PROTOCOMM_SEC2_MODE
+        bool "Security version 2 mode"
+        depends on LOCAL_CONTROL_PROTOCOMM_SECURITY_VERSION_2
+        default LOCAL_CONTROL_PROTOCOMM_SEC2_DEV_MODE
+
+        config LOCAL_CONTROL_PROTOCOMM_SEC2_DEV_MODE
+            bool "Security version 2 development mode"
+            depends on LOCAL_CONTROL_PROTOCOMM_SECURITY_VERSION_2
+            help
+                This enables the development mode for
+                security version 2.
+                Please note that this mode is NOT recommended for production purpose.
+
+        config LOCAL_CONTROL_PROTOCOMM_SEC2_PROD_MODE
+            bool "Security version 2 production mode"
+            depends on LOCAL_CONTROL_PROTOCOMM_SECURITY_VERSION_2
+            help
+                This enables the production mode for
+                security version 2.
+
+        config LOCAL_CONTROL_PROTOCOMM_SEC2_USERNAME
+            string "SEC_2 username"
+            default "wifiprov"
+            help
+                Local Control Proto Communication Security 2 :: username
+
+        config LOCAL_CONTROL_PROTOCOMM_SEC2_PASSWORD
+            string "SEC_2 password"
+            default "abcd1234"
+            help
+                Local Control Proto Communication Security 2 :: password
+    endchoice
+
+    choice LOCAL_CONTROL_DEVICE_SELECT
+        bool "Device type select"
+        default LOCAL_CONTROL_SWITCH_DEVICE
+        help
+            Local Control Device type select.
+            Device type will config Local Control Properties
+
+        config LOCAL_CONTROL_SWITCH_DEVICE
+            bool "Switch device"
+            select SWITCH_DEVICE_TYPE
+            help
+                Param: On/Off
+
+        config LOCAL_CONTROL_TEMPERATURE_SENSOR_DEVICE
+            bool "Temperature sensor device"
+            select TEMPERATURE_SENSOR_DEVICE_TYPE
+            help
+                Param: Temperature (oC), Mesurement Period (ms), Lower Limit (oC), Higher Limit (oC)  
+
+    endchoice    
+
+
+endmenu

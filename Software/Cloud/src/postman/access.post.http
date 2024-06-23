@@ -1,0 +1,21 @@
+@url_dev = http://localhost:3005/v1/api
+
+### User signup
+POST {{url_dev}}/access/user/signup
+Content-Type: application/json
+
+{
+    "name":"do30032003",
+    "email":"do30032004@gmail.com",
+    "password":"30032003"
+}
+
+### User LogIn
+POST {{url_dev}}/access/user/login
+Content-Type: application/json
+
+{
+    "email":"do30032004@gmail.com",
+    "password":"30032003"
+}
+
