@@ -4,13 +4,15 @@ import ErrorResponse from "../helpers/errorHandle.response.js";
 import util from "util";
 import jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
+import baseResponse from "../helpers/respond.js";
 
 const authenticationHeader = async (req, res, next) => {
   const userID = await req.get("CLIENT_ID");
   const accessToken = await req.get("ACCESS_TOKEN");
-
   if (!accessToken) {
-    throw new ErrorResponse("You must log in to access this resource", 404);
+    res
+      .status(404)
+      .json(baseResponse(null, 404, "You must login to access this page"));
   }
 
   // verify token
@@ -20,15 +22,15 @@ const authenticationHeader = async (req, res, next) => {
   );
 
   // check user exist ?
-  const currentUser = await  userModel.findById(decoded.userId);
+  const currentUser = await userModel.findById(decoded.userId);
   if (!currentUser) {
-    throw new ErrorResponse(
-      "The Token belong to this user no longer exist yet"
-    );
+    res.status(404).json(baseResponse(null, 404, "User exit"));
   }
 
   if (currentUser._id != userID) {
-    throw new ErrorResponse(`you are not belong to this page`, 404);
+    res
+      .status(404)
+      .json(baseResponse(null, 404, "You are not belong to this page"));
   }
 
   next();

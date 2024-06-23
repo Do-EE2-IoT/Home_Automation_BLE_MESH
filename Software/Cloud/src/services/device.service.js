@@ -8,6 +8,7 @@ import DoorModel from "../models/door.model.js";
 import userModel from "../models/user.model.js";
 import publishTopic from "../mqtt/publish.mqtt/index.js";
 import { subscribeTopic } from "../mqtt/subscribe.mqtt/index.js";
+import baseResponse from "../helpers/respond.js";
 
 class DeviceService {
   addMyGateway = async (Gateway) => {
@@ -20,20 +21,19 @@ class DeviceService {
       })
     );
 
-    return {
-      message:
-        "Send request add Gateway successfully, wait for gateway respond",
-    };
+    return baseResponse(
+      null,
+      200,
+      "You are successfully send request add gateway"
+    );
   };
   getDetectedDevice = async (id) => {
     const detectedDevice = await newDeviceModel.find({ user: id });
-    return {
+    return baseResponse(
       detectedDevice,
-      //  type : detectedDevice.type,
-      //  uuid : detectedDevice.uuid,
-      //  mac : detectedDevice.mac,
-      //  clientID : detectedDevice.clientID
-    };
+      200,
+      "get detected devices successfully"
+    );
   };
 
   addNewDevice = async (Infor) => {
@@ -49,10 +49,8 @@ class DeviceService {
         mac: Infor.mac,
       })
     );
-    return {
-      type: Infor.type,
-      message: "send request add new device successfully",
-    };
+    const data = Infor.type;
+    return baseResponse(data, 200, "Send request add device successfully");
   };
 
   rgbInfor = async (Infor) => {
@@ -63,18 +61,20 @@ class DeviceService {
     console.log(Infor.RGBAddress);
 
     if (!rgb) {
-      throw new ErrorResponse("This RGB is not belong to you", 404);
+      return baseResponse(null, 404, "This RGB is not belong to you");
     }
 
-    return {
+    return baseResponse(
       rgb,
-    };
+      200,
+      `get rgb with ID ${rgb.address} successfully`
+    );
   };
 
   rgbControl = async (Infor) => {
     const user = await userModel.findById(Infor.clientID);
     if (!user) {
-      throw new ErrorResponse("User exit!!", 403);
+      return baseResponse(null, 403, "User exit");
     }
     if (Infor.groupAddress) {
       console.log(Infor.groupAddress);
@@ -82,10 +82,10 @@ class DeviceService {
         user: Infor.clientID,
         Group: { $in: Infor.groupAddress },
       });
-    //  console.log(Infor.groupAddress);
+      //  console.log(Infor.groupAddress);
 
       if (!rgb) {
-        throw new ErrorResponse("This RGB is not belong to you", 404);
+        return baseResponse(null, 404, "This RGB not belong to you");
       }
       const payload = {
         address: Infor.groupAddress,
@@ -106,7 +106,7 @@ class DeviceService {
       console.log(Infor.unicastAddress);
 
       if (!rgb) {
-        throw new ErrorResponse("This RGB is not belong to you", 404);
+        return baseResponse(null, 404, "This RGB not belong to you");
       }
       const payload = {
         address: Infor.unicastAddress,
@@ -120,9 +120,11 @@ class DeviceService {
         JSON.stringify(payload)
       );
     }
-    return {
-      message: "Send RGB control Successfully, wait for respond",
-    };
+    return baseResponse(
+      null,
+      200,
+      "Send RGB control successfully, wait for respond"
+    );
   };
 
   sensorInfor = async (Infor) => {
@@ -133,12 +135,14 @@ class DeviceService {
     console.log(Infor.SensorAddress);
 
     if (!sensor) {
-      throw new ErrorResponse("This Sensor is not belong to you", 404);
+      return baseResponse(null, 404, "This Sensor is not belong to you");
     }
 
-    return {
+    return baseResponse(
       sensor,
-    };
+      200,
+      `get sensor with ID ${sensor.address} successfully`
+    );
   };
 
   sirenInfor = async (Infor) => {
@@ -149,12 +153,14 @@ class DeviceService {
     console.log(Infor.SirenAddress);
 
     if (!siren) {
-      throw new ErrorResponse("This Siren is not belong to you", 404);
+      return baseResponse(null, 404, "This Siren is not belong to you");
     }
 
-    return {
+    return baseResponse(
       siren,
-    };
+      200,
+      `get sensor with ID ${siren.address} successfully`
+    );
   };
 
   encoderInfor = async (Infor) => {
@@ -165,12 +171,14 @@ class DeviceService {
     console.log(Infor.EncoderAddress);
 
     if (!encoder) {
-      throw new ErrorResponse("This Encoder is not belong to you", 404);
+      return baseResponse(null, 404, "This Encoder is not belong to you ");
     }
 
-    return {
+    return baseResponse(
       encoder,
-    };
+      200,
+      `get encoder with ID ${encoder.address} successfully`
+    );
   };
 
   doorInfor = async (Infor) => {
@@ -181,12 +189,14 @@ class DeviceService {
     console.log(Infor.DoorAddress);
 
     if (!door) {
-      throw new ErrorResponse("This Door is not belong to you", 404);
+      return baseResponse(null, 404, "This Door is not belong to you");
     }
 
-    return {
+    return baseResponse(
       door,
-    };
+      200,
+      `get door with ID ${door.address} successfully`
+    );
   };
 }
 
