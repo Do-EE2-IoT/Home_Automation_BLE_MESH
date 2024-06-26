@@ -16,6 +16,7 @@ const encoderSchema = new mongoose.Schema({
   },
   Group: {
     type: Array,
+    default: [],
   },
 });
 

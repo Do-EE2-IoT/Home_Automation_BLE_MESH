@@ -1,7 +1,7 @@
 import mqtt from "mqtt";
 import dotenv from "dotenv";
 import { mqttHandle } from "./mqtthandel.mqtt.js";
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: "./config.env" });
 
 dotenv.config();
 var mqttClient;
@@ -32,6 +32,10 @@ function mqttBrokerInit() {
     console.log(
       "Received Message: " + message.toString() + "\nOn topic: " + topic
     );
+    if (JSON.parse(message.toString()).clientID == "") {
+      console.log("Lack of clientID");
+      return;
+    }
     await mqttHandle(topic, JSON.parse(message.toString()));
   });
 }

@@ -9,6 +9,7 @@ import userModel from "../models/user.model.js";
 import publishTopic from "../mqtt/publish.mqtt/index.js";
 import { subscribeTopic } from "../mqtt/subscribe.mqtt/index.js";
 import baseResponse from "../helpers/respond.js";
+import ButtonModel from "../models/button.model.js";
 
 class DeviceService {
   addMyGateway = async (Gateway) => {
@@ -39,7 +40,7 @@ class DeviceService {
   addNewDevice = async (Infor) => {
     const User = await userModel.findById(Infor.clientID);
     if (!User) {
-      throw new ErrorResponse("You are not belong to this page", 404);
+      return baseResponse(null, 404, "User exit");
     }
     publishTopic(
       `/device/addnewdevice/${User.gateway}`,
@@ -51,6 +52,116 @@ class DeviceService {
     );
     const data = Infor.type;
     return baseResponse(data, 200, "Send request add device successfully");
+  };
+
+  deleteDevice = async (Infor) => {
+    const User = await userModel.findById(Infor.clientID);
+    if (!User) {
+      return baseResponse(null, 404, "User exit");
+    }
+    if (Infor.type === "button") {
+      const button = await ButtonModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!button) {
+        return baseResponse(null, 404, "You aren't own this button");
+      }
+
+      publishTopic(
+        `/device/deletedevice/${User.gateway}`,
+        1,
+        JSON.stringify({
+          address: button.address,
+        })
+      );
+    } else if (Infor.type === "rgb") {
+      const rgb = await RGBModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!rgb) {
+        return baseResponse(null, 404, "You aren't own this rgb");
+      }
+
+      publishTopic(
+        `/device/deletedevice/${User.gateway}`,
+        1,
+        JSON.stringify({
+          address: rgb.address,
+        })
+      );
+    } else if (Infor.type === "encoder") {
+      const encoder = await Encoder.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!encoder) {
+        return baseResponse(null, 404, "You aren't own this encoder");
+      }
+
+      publishTopic(
+        `/device/deletedevice/${User.gateway}`,
+        1,
+        JSON.stringify({
+          address: encoder.address,
+        })
+      );
+    } else if (Infor.type === "siren") {
+      const siren = await SirenModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!siren) {
+        return baseResponse(null, 404, "You aren't own this Siren");
+      }
+
+      publishTopic(
+        `/device/deletedevice/${User.gateway}`,
+        1,
+        JSON.stringify({
+          address: siren.address,
+        })
+      );
+    } else if (Infor.type === "sensor") {
+      const sensor = await SensorModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!sensor) {
+        return baseResponse(null, 404, "You aren't own this sensor");
+      }
+
+      publishTopic(
+        `/device/deletedevice/${User.gateway}`,
+        1,
+        JSON.stringify({
+          address: sensor.address,
+        })
+      );
+    } else if (Infor.type === "door") {
+      const door = await EncoderModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!door) {
+        return baseResponse(null, 404, "You aren't own this encoder");
+      }
+
+      publishTopic(
+        `/device/deletedevice/${User.gateway}`,
+        1,
+        JSON.stringify({
+          address: door.address,
+        })
+      );
+    }
+
+    return baseResponse(
+      null,
+      200,
+      "Send request delete successfully, wait for respond"
+    );
   };
 
   rgbInfor = async (Infor) => {

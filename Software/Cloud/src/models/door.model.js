@@ -12,12 +12,15 @@ const doorSchema = new mongoose.Schema({
   },
   Control: {
     type: Boolean,
+    default: true,
   },
   password: {
     type: String,
+    default: "",
   },
   rfidCard: {
     type: Array,
+    default: [],
   },
   address: {
     type: String,
@@ -25,6 +28,7 @@ const doorSchema = new mongoose.Schema({
   },
   Group: {
     type: Array,
+    default: [],
   },
 });
 

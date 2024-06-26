@@ -12,6 +12,7 @@ const sirenSchema = new mongoose.Schema({
   },
   Control: {
     type: Boolean,
+    default: 0,
   },
   address: {
     type: String,

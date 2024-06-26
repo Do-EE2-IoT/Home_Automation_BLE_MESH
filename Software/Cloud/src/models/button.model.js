@@ -12,6 +12,7 @@ const buttonSchema = new mongoose.Schema({
   },
   Control: {
     type: Boolean,
+    default: true,
   },
   address: {
     type: String,

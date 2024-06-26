@@ -14,18 +14,21 @@ const rgbLightSchema = new mongoose.Schema({
     type: Number,
     min: 0,
     max: 255,
+    default: 0,
   },
 
   green: {
     type: Number,
     min: 0,
     max: 255,
+    default: 0,
   },
 
   blue: {
     type: Number,
     min: 0,
     max: 255,
+    default: 0,
   },
   address: {
     type: String,
@@ -33,6 +36,7 @@ const rgbLightSchema = new mongoose.Schema({
   },
   Group: {
     type: Array,
+    default: [],
   },
 });
 

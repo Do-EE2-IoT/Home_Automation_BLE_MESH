@@ -26,6 +26,15 @@ class DeviceController {
       .json(await deviceService.addNewDevice({ type, uuid, mac, clientID }));
   };
 
+  deleteDevice = async (req, res, next) => {
+    console.log("POST :: Delete device");
+    const clientID = req.get("CLIENT_ID");
+    const { address, type } = req.body;
+    return res
+      .status(201)
+      .json(await deviceService.deleteDevice({ clientID, address, type }));
+  };
+
   // -----------------------------------RGB---------------------------------//
   rgbInfor = async (req, res, next) => {
     const RGBAddress = req.params.address;
