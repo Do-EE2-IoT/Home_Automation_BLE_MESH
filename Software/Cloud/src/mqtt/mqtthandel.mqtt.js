@@ -177,6 +177,31 @@ const mqttHandle = async (topic, data) => {
         newEncoder.user
       );
     }
+  } else if (topic === "/device/button") {
+    const tryOldButton = await ButtonModel.findOne({
+      user: data.clientID,
+      address: data.address,
+    });
+    if (tryOldButton) {
+      console.log("This user onwed this button");
+      return;
+    } else {
+      console.log("Preprare add new button ");
+    }
+    const newButton = await ButtonModel.create({
+      name: "button",
+      user: data.clientID,
+      address: data.address,
+    });
+
+    if (!newButton) {
+      console.log("Cannot add button for user");
+    } else {
+      console.log(
+        "Successfully add button device for user name ::",
+        newButton.user
+      );
+    }
   } else if (topic === "/device/deletedeviceres") {
     if (data.type == "button") {
       const button = await ButtonModel.findOne({
@@ -262,9 +287,8 @@ const mqttHandle = async (topic, data) => {
         }
         console.log("Delete siren successfully");
       }
-    }
-    else if (data.type === "door") {
-      const siren = await DoorModel.findOne({
+    } else if (data.type === "door") {
+      const door = await DoorModel.findOne({
         user: data.clientID,
         address: data.address,
       });
@@ -275,10 +299,65 @@ const mqttHandle = async (topic, data) => {
         const deletedoor = await DoorModel.findOneAndDelete({
           address: data.address,
         });
-        if (!deleteensiren) {
+        if (!deletedoor) {
           console.log("Can not delete this door");
         }
         console.log("Delete door successfully");
+      }
+    }
+  } else if (topic === "/device/registerroom") {
+    const user = await userModel.findById(data.clientID);
+    if (!user) {
+      console.log("Not exist user");
+      return;
+    }
+    if (data.type === "button") {
+      const button = await ButtonModel.findOne({
+        user: data.clientID,
+        address: data.address,
+      });
+      if (!button) {
+        console.log("This user dont have this button");
+        return;
+      }
+      if (button.Group.includes(data.group)) {
+        console.log("This user registed room 1 before");
+        return;
+      }
+
+      const buttonRegiterRoom = await ButtonModel.findOneAndUpdate(
+        { user: data.clientID },
+        { $push: { Group: data.group } },
+        { new: true }
+      );
+      if (!buttonRegiterRoom) {
+        console.log(`Cannot register room ${data.group} for this user`);
+        return;
+      }
+    }
+  } else if (topic === "/device/deleteroom") {
+    const user = await userModel.findById(data.clientID);
+    if (!user) {
+      console.log("Not exist user");
+      return;
+    }
+    if (data.type === "button") {
+      const button = await ButtonModel.findOne({
+        user: data.clientID,
+        address: data.address,
+        Group: data.group,
+      });
+      if (!button) {
+        console.log("This user don't have this button or registed this room yet");
+        return;
+      }
+      const buttonDeleteRoom = await ButtonModel.findOneAndUpdate(
+        { user: data.clientID },
+        { $pull: { Group: data.group } }
+      );
+      if (!buttonDeleteRoom) {
+        console.log(`Cannot delete room ${data.group} for this user`);
+        return;
       }
     }
   }

@@ -164,6 +164,219 @@ class DeviceService {
     );
   };
 
+  registerRoom = async (Infor) => {
+    const user = await userModel.findById(Infor.clientID);
+    if (!user) {
+      return baseResponse(null, 404, "User exit");
+    }
+    if (Infor.type === "button") {
+      const button = await ButtonModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!button) {
+        return baseResponse(
+          null,
+          404,
+          `You dont have this ${Infor.type}, register for room 1 is not  accepted`
+        );
+      }
+      if (button.Group.includes(Infor.group)) {
+        return baseResponse(
+          null,
+          404,
+          `This ${Infor.type} stay in room 1 before, can't add again`
+        );
+      } else {
+        publishTopic(
+          `/device/register/room1/${user.gateway}`,
+          1,
+          JSON.stringify({
+            type: Infor.type,
+            address: Infor.address,
+            group: Infor.group,
+          })
+        );
+        return baseResponse(
+          null,
+          201,
+          `Send command to register device ${Infor.type} have address ${Infor.address} to room 1 successfully, wait for respond`
+        );
+      }
+    }else if (Infor.type === "encoder") {
+      const encoder = await EncoderModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!encoder) {
+        return baseResponse(
+          null,
+          404,
+          `You dont have this ${Infor.type}, register for room 1 is not  accepted`
+        );
+      }
+      if (encoder.Group.includes(Infor.group)) {
+        return baseResponse(
+          null,
+          404,
+          `This ${Infor.type} stay in room 1 before, can't add again`
+        );
+      } else {
+        publishTopic(
+          `/device/register/room1/${user.gateway}`,
+          1,
+          JSON.stringify({
+            type: Infor.type,
+            address: Infor.address,
+            group: Infor.group,
+          })
+        );
+        return baseResponse(
+          null,
+          201,
+          `Send command to register device ${Infor.type} have address ${Infor.address} to room 1 successfully, wait for respond`
+        );
+      }
+    }else if (Infor.type === "rgb") {
+      const rgb = await RGBModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!rgb) {
+        return baseResponse(
+          null,
+          404,
+          `You dont have this ${Infor.type}, register for room 1 is not  accepted`
+        );
+      }
+      if (rgb.Group.includes(Infor.group)) {
+        return baseResponse(
+          null,
+          404,
+          `This ${Infor.type} stay in room 1 before, can't add again`
+        );
+      } else {
+        publishTopic(
+          `/device/register/room1/${user.gateway}`,
+          1,
+          JSON.stringify({
+            type: Infor.type,
+            address: Infor.address,
+            group: Infor.group,
+          })
+        );
+        return baseResponse(
+          null,
+          201,
+          `Send command to register device ${Infor.type} have address ${Infor.address} to room 1 successfully, wait for respond`
+        );
+      }
+    }else if (Infor.type === "siren") {
+      const siren = await SirenModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!siren) {
+        return baseResponse(
+          null,
+          404,
+          `You dont have this ${Infor.type}, register for room 1 is not  accepted`
+        );
+      }
+      if (siren.Group.includes(Infor.group)) {
+        return baseResponse(
+          null,
+          404,
+          `This ${Infor.type} stay in room 1 before, can't add again`
+        );
+      } else {
+        publishTopic(
+          `/device/register/room1/${user.gateway}`,
+          1,
+          JSON.stringify({
+            type: Infor.type,
+            address: Infor.address,
+            group: Infor.group,
+          })
+        );
+        return baseResponse(
+          null,
+          201,
+          `Send command to register device ${Infor.type} have address ${Infor.address} to room 1 successfully, wait for respond`
+        );
+      }
+    }else if (Infor.type === "sensor") {
+      const sensor = await SensorModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!sensor) {
+        return baseResponse(
+          null,
+          404,
+          `You dont have this ${Infor.type}, register for room 1 is not  accepted`
+        );
+      }
+      if (sensor.Group.includes(Infor.group)) {
+        return baseResponse(
+          null,
+          404,
+          `This ${Infor.type} stay in room 1 before, can't add again`
+        );
+      } else {
+        publishTopic(
+          `/device/register/room1/${user.gateway}`,
+          1,
+          JSON.stringify({
+            type: Infor.type,
+            address: Infor.address,
+            group: Infor.group,
+          })
+        );
+        return baseResponse(
+          null,
+          201,
+          `Send command to register device ${Infor.type} have address ${Infor.address} to room 1 successfully, wait for respond`
+        );
+      }
+    }
+    else if (Infor.type === "door") {
+      const door = await DoorModel.findOne({
+        user: Infor.clientID,
+        address: Infor.address,
+      });
+      if (!door) {
+        return baseResponse(
+          null,
+          404,
+          `You dont have this ${Infor.type}, register for room 1 is not  accepted`
+        );
+      }
+      if (door.Group.includes(Infor.group)) {
+        return baseResponse(
+          null,
+          404,
+          `This ${Infor.type} stay in room 1 before, can't add again`
+        );
+      } else {
+        publishTopic(
+          `/device/register/room1/${user.gateway}`,
+          1,
+          JSON.stringify({
+            type: Infor.type,
+            address: Infor.address,
+            group: Infor.group,
+          })
+        );
+        return baseResponse(
+          null,
+          201,
+          `Send command to register device ${Infor.type} have address ${Infor.address} to room 1 successfully, wait for respond`
+        );
+      }
+    }
+  };
+
   rgbInfor = async (Infor) => {
     const rgb = await RGBModel.findOne({
       user: Infor.clientID,
@@ -307,6 +520,24 @@ class DeviceService {
       door,
       200,
       `get door with ID ${door.address} successfully`
+    );
+  };
+
+  buttonInfor = async (Infor) => {
+    const button = await ButtonModel.findOne({
+      user: Infor.clientID,
+      address: Infor.ButtonAddress,
+    });
+    console.log(Infor.ButtonAddress);
+
+    if (!button) {
+      return baseResponse(null, 404, "This Button is not belong to you");
+    }
+
+    return baseResponse(
+      button,
+      200,
+      `get button with ID ${button.address} successfully`
     );
   };
 }

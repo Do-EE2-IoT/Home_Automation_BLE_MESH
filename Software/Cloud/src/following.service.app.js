@@ -23,7 +23,9 @@ FollowingService.use(cors());
 mqttBrokerInit();
 subscribeTopic("/device/resgateway", 1);
 subscribeTopic("/device/detect", 1);
-
+subscribeTopic("/device/registerroom", 1);
+subscribeTopic("/device/deleteroom", 1);
+subscribeTopic("/device/button", 1);
 subscribeTopic("/device/rgb", 1);
 subscribeTopic("/device/sensor", 1);
 subscribeTopic("/device/siren", 1);

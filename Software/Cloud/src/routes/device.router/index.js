@@ -8,6 +8,9 @@ deviceRouter
   .get("/getnewdevice", asynMiddlewareHandler(deviceController.getAllNewDevice))
   .post("/addnewdevice", asynMiddlewareHandler(deviceController.addNewDevice))
   .post("/deletedevice", asynMiddlewareHandler(deviceController.deleteDevice))
+  .patch("/registerroom/1", asynMiddlewareHandler(deviceController.registerRoom)) // group must be 0xC000
+  .patch("/registerroom/2", asynMiddlewareHandler(deviceController.registerRoom)) // group must be 0xC001
+  .get("/infor/button/:address", asynMiddlewareHandler(deviceController.buttonInfor))
   .get("/infor/rgb/:address", asynMiddlewareHandler(deviceController.rgbInfor))
   .patch(
     "/control/rgb/:address",

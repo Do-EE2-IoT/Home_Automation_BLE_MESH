@@ -20,6 +20,8 @@ const buttonSchema = new mongoose.Schema({
   },
   Group: {
     type: Array,
+    default: [],
+    unique: true,
   },
 });
 
