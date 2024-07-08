@@ -24,6 +24,8 @@
 #include "esp_ble_mesh_defs.h"
 #include "esp_ble_mesh_common_api.h"
 #include "esp_ble_mesh_local_data_operation_api.h"
+#include "nvs_flash.h"
+#include "esp_system.h"
 #define BLE_MESH_DEVICE_NAME "Server node"
 
 static const char* TAG = "MESH_SERVER";
@@ -251,7 +253,22 @@ static void ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t event,
                     param->value.state_change.mod_sub_add.model_id,
                     param->value.state_change.mod_sub_add.sub_addr);
             break;
-
+            case ESP_BLE_MESH_MODEL_OP_MODEL_SUB_DELETE:
+                ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_SUB_DELETE");
+                ESP_LOGI(TAG, "elem_addr 0x%04x, sub_addr 0x%04x, cid 0x%04x, mod_id 0x%04x",
+                    param->value.state_change.mod_sub_delete.element_addr,
+                    param->value.state_change.mod_sub_delete.sub_addr,
+                    param->value.state_change.mod_sub_delete.company_id,
+                    param->value.state_change.mod_sub_delete.model_id);
+                ESP_LOGI(TAG, "Model 0x%06x subscribed to Group 0x%04x !",
+                    param->value.state_change.mod_sub_delete.model_id,
+                    param->value.state_change.mod_sub_delete.sub_addr);
+            break;
+            case ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND:
+                ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND");
+                nvs_flash_erase();
+                esp_restart();
+                
 
             /** @TODO: Adicionar publication address tbm */
 
@@ -284,7 +301,8 @@ static void ble_mesh_custom_sensor_server_model_cb(esp_ble_mesh_model_cb_event_t
                      response = *(model_encoder_data_t *)param->model_operation.model->user_data;
 
                     err = esp_ble_mesh_server_model_send_msg(param->model_operation.model, param->model_operation.ctx, 
-                                    ESP_BLE_MESH_CUSTOM_SENSOR_MODEL_OP_STATUS, sizeof(response), (uint8_t *)&response);
+                                    ESP_BLE_MESH_CUSTOM_SIREN_MODEL_OP_STATUS, sizeof(response), (uint8_t *)&response);
+                    ESP_LOGI(TAG, "HELLO" );
                     if (err) {
                        // ESP_LOGE(TAG, "%s Cannot send opcode OPCODE 0x%06"PRIx32, __func__, ESP_BLE_MESH_CUSTOM_SENSOR_MODEL_OP_STATUS);
                     }
@@ -298,7 +316,8 @@ static void ble_mesh_custom_sensor_server_model_cb(esp_ble_mesh_model_cb_event_t
                     //* Salva os dados recebidos no State do Model
                     parse_received_data(param, (model_encoder_data_t*)&param->model_operation.model->user_data);
                     err = esp_ble_mesh_server_model_send_msg(param->model_operation.model, param->model_operation.ctx, 
-                                    ESP_BLE_MESH_CUSTOM_SENSOR_MODEL_OP_STATUS, sizeof(response), (uint8_t *)&response);
+                                    ESP_BLE_MESH_CUSTOM_SIREN_MODEL_OP_STATUS, sizeof(response), (uint8_t *)&response);
+                               ESP_LOGI(TAG, "HELLO2" );     
                     if (err) {
                        // ESP_LOGE(TAG, "%s Cannot send opcode OPCODE 0x%06"PRIx32, __func__, ESP_BLE_MESH_CUSTOM_SENSOR_MODEL_OP_STATUS);
                     }

@@ -11,5 +11,6 @@ typedef void *mqtt_client_callback_t (char*,int);
 void MQTT_client_init(void);
 void mqtt_client_callback_register(void *cb);
 void mqtt_client_publish(char* TOPIC,int QOS, char *data);
+void mqtt_client_callback_register2(void *call1);
 
 #endif

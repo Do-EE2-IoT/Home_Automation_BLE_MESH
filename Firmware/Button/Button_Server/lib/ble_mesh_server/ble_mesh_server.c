@@ -277,6 +277,19 @@ static void example_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t
                 param->value.state_change.mod_sub_add.company_id,
                 param->value.state_change.mod_sub_add.model_id);
             break;
+        case ESP_BLE_MESH_MODEL_OP_MODEL_SUB_DELETE:
+            ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_SUB_ADD");
+            ESP_LOGI(TAG, "elem_addr 0x%04x, sub_addr 0x%04x, cid 0x%04x, mod_id 0x%04x",
+                param->value.state_change.mod_sub_add.element_addr,
+                param->value.state_change.mod_sub_add.sub_addr,
+                param->value.state_change.mod_sub_add.company_id,
+                param->value.state_change.mod_sub_add.model_id);
+            break;
+            case ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND:
+                ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND");
+                
+                nvs_flash_erase();
+                esp_restart();
         default:
             break;
         }

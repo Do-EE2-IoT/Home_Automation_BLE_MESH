@@ -25,6 +25,9 @@ mqtt_client_callback_t *mqtt_client_callback;
 void mqtt_client_callback_register(void *cb){
     mqtt_client_callback = cb;
 }
+void mqtt_client_callback_register2(void *call1){
+    mqtt_client_callback = call1;
+}
 
 /*
  * @brief Event handler registered to receive MQTT events

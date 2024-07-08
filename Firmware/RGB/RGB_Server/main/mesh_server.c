@@ -24,6 +24,10 @@
 #include "esp_ble_mesh_defs.h"
 #include "esp_ble_mesh_common_api.h"
 #include "esp_ble_mesh_local_data_operation_api.h"
+#include "esp_system.h"
+
+
+#include "nvs_flash.h"
 #define BLE_MESH_DEVICE_NAME "Server node"
 
 static const char* TAG = "MESH_SERVER";
@@ -250,6 +254,14 @@ static void ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t event,
                     param->value.state_change.mod_sub_add.model_id,
                     param->value.state_change.mod_sub_add.sub_addr);
             break;
+
+            case ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND:
+                ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND");
+                
+                nvs_flash_erase();
+                esp_restart();
+            
+                 
 
 
             /** @TODO: Adicionar publication address tbm */

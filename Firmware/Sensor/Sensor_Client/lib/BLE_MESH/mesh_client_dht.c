@@ -289,7 +289,11 @@ static void ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t event,
                     ESP_LOGI(TAG, "AppKey idx 0x%04x bound to custom sensor model id", node_app_idx);
                 }
             break;
-
+            case ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND:
+                ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND");
+                
+                nvs_flash_erase();
+                esp_restart();
             default:
             break;
         }
